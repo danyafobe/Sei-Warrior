@@ -113,6 +113,26 @@ def start_fight(message):
         conn.commit()
     else:
         bot.send_message(message.chat.id, "You are not registered yet. Use /start to register.")
+# Команда для получения помощи
+@bot.message_handler(commands=['help'])
+def send_help(message):
+    help_text = (
+        "Available commands:\n"
+        "/start - Register or re-register\n"
+        "/status - Check your player stats\n"
+        "/fight - Start a fight with a random enemy\n"
+        "/help - Show this help message"
+    )
+    bot.send_message(message.chat.id, help_text)
+
+# Команда для сброса состояния игрока
+@bot.message_handler(commands=['reset'])
+def reset_status(message):
+    user_id = message.from_user.id
+    cursor.execute('UPDATE players SET health = 100, xp = 0 WHERE id = ?', (user_id,))
+    conn.commit()
+    bot.send_message(message.chat.id, "Your stats have been reset.")
+
 
 # Запуск бота
 bot.polling()
