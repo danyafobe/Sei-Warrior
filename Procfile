@@ -1,1 +1,1 @@
-worker: python your_bot.py
+worker: python seiwarrior.py
